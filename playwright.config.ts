@@ -60,8 +60,8 @@ export default defineConfig({
     video: 'retain-on-failure',
 
     // Reasonable action/navigation timeouts for a real, sometimes-slow site.
-    actionTimeout: 15_000,
-    navigationTimeout: 30_000,
+     actionTimeout: 30_000,
+    navigationTimeout: 60_000,
 
     // A realistic viewport and locale for a UK retail site.
     viewport: { width: 1366, height: 900 },
