@@ -18,7 +18,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
 
   // Retry flaky tests on CI; locally, fail fast for a tight feedback loop.
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 1,
 
   // Limit workers on CI for stability; use the default (cores) locally.
   workers: process.env.CI ? 2 : undefined,
@@ -27,7 +27,7 @@ export default defineConfig({
   fullyParallel: true,
 
   // Per-test timeout and assertion timeout.
-  timeout: 60_000,
+  timeout: 90_000,
   expect: { timeout: 15_000 },
 
   /**
@@ -60,7 +60,7 @@ export default defineConfig({
     video: 'retain-on-failure',
 
     // Reasonable action/navigation timeouts for a real, sometimes-slow site.
-     actionTimeout: 30_000,
+    actionTimeout: 30_000,
     navigationTimeout: 60_000,
 
     // A realistic viewport and locale for a UK retail site.

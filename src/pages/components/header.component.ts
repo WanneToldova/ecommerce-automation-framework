@@ -45,7 +45,12 @@ export class Header {
   /** Clicks "Logout" in the nav (only present when signed in). */
   async logout(): Promise<void> {
     logger.info('Logging out via the header.');
-    await this.logoutLink.click();
+    // Logout navigates to /login. On this ad-heavy site the click's implicit
+    // "wait for navigation to settle" can hang, so we opt out of it and wait
+    // for the logged-out marker (the Signup/Login link) to confirm success.
+    // (noWaitAfter is becoming Playwright's default behaviour anyway.)
+    await this.logoutLink.click({ noWaitAfter: true });
+    await this.signupLoginLink.first().waitFor({ state: 'visible' });
   }
 
   /** True when the "Logged in as" indicator is present in the nav. */

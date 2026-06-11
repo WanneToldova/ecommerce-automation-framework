@@ -35,7 +35,10 @@ export const TEST_PASSWORD = 'Wanne@QA2026';
 export function generateNewUser(): NewUser {
   return {
     name: 'Wanne Toldova',
-    email: `wanne.qa.${Date.now()}@example.com`,
+    // Timestamp + random suffix guarantees uniqueness even when two tests
+    // register in the same millisecond on parallel workers (the site rejects
+    // duplicate emails).
+    email: `wanne.qa.${Date.now()}.${faker.string.alphanumeric(5).toLowerCase()}@example.com`,
     password: TEST_PASSWORD,
     title: 'Mr',
     firstName: 'Wanne',
