@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
 /**
- * A self-contained set of details for registering a brand-new account on
- * Automation Exercise. Mirrors the fields the site's signup form requires.
+ * Everything needed to register a fresh account on Automation Exercise.
+ * Matches the fields the signup form asks for.
  */
 export interface NewUser {
   name: string;
@@ -21,24 +21,25 @@ export interface NewUser {
   dateOfBirth: { day: string; month: string; year: string };
 }
 
+// A fixed, obviously-fake password for generated accounts. Keeping it constant
+// means an account created by a test run can be reused for the login test
+// (drop the email + this password into .env). Safe to keep in source: it only
+// ever applies to throwaway accounts on a public practice site.
+export const TEST_PASSWORD = 'Wanne@QA2026';
+
 /**
- * Generates a fresh, unique user on every call.
- *
- * The email embeds a timestamp so runs never collide with an existing account
- * (the site rejects duplicate emails). Country is one of the site's accepted
- * dropdown values.
+ * Builds a fresh user on each call. The email carries a timestamp so it's
+ * unique every run (the site rejects duplicate emails); the rest is realistic
+ * filler. I keep a recognisable "wanne" prefix so test data is easy to spot.
  */
 export function generateNewUser(): NewUser {
-  const firstName = faker.person.firstName();
-  const lastName = faker.person.lastName();
-
   return {
-    name: `${firstName} ${lastName}`,
-    email: `qa.automation.${Date.now()}@example.com`,
-    password: `Qa!${faker.internet.password({ length: 8 })}`,
+    name: 'Wanne Toldova',
+    email: `wanne.qa.${Date.now()}@example.com`,
+    password: TEST_PASSWORD,
     title: 'Mr',
-    firstName,
-    lastName,
+    firstName: 'Wanne',
+    lastName: 'Toldova',
     company: faker.company.name(),
     address: faker.location.streetAddress(),
     country: 'United States', // must match one of the site's dropdown options
@@ -50,10 +51,8 @@ export function generateNewUser(): NewUser {
   };
 }
 
-/**
- * Search terms. `withResults` reliably returns products on this catalogue;
- * `filtering` is another valid term used to prove search narrows the list.
- */
+// Search terms: one that clearly returns products, and another used to prove
+// search actually filters the grid rather than ignoring the query.
 export const SEARCH_TERMS = {
   withResults: 'dress',
   filtering: 'top',

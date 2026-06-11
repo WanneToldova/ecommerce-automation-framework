@@ -6,14 +6,16 @@ demonstrates a clean, maintainable framework design: Page Object Model,
 dependency-injected fixtures, centralized configuration, structured logging,
 and multi-format reporting.
 
-> **Why this site?** The branded sites listed in the challenge sit behind Akamai
-> bot protection that returns *Access Denied* to automated traffic. Rather than
-> fight anti-bot measures (out of scope for demonstrating framework design), I
-> targeted a full-featured e-commerce site purpose-built for automation, which
-> exposes stable `data-qa` test hooks and permits the complete journey including
-> account creation. The framework is **site-agnostic** — point `BASE_URL` at any
-> store to retarget. This is itself a deliberate QA decision: choose a stable,
-> automatable target so the suite is reliable and deterministic.
+> **Why this site?** I first targeted Simply Be (one of the challenge's own
+> brands), but it sits behind Akamai bot protection that returned *Access
+> Denied* to automated traffic — and, from outside the UK, to a normal browser
+> too. Rather than fight anti-bot measures (out of scope for showing framework
+> design), I made the QA call to switch to a stable, automation-friendly target,
+> which the challenge explicitly allows. Automation Exercise is purpose-built for
+> automation: it exposes semantic `data-qa` test hooks and permits the full
+> journey, including account creation. The framework stays **site-agnostic** —
+> point `BASE_URL` at any store to retarget — so the choice of target never
+> leaks into the test code.
 
 ---
 
@@ -66,11 +68,11 @@ ecommerce-automation-framework/
 │   │   │   ├── cookie-consent.component.ts
 │   │   │   └── header.component.ts
 │   │   ├── home.page.ts
-│   │   ├── products.page.ts       # Listing: search, grid, add-to-cart, view product
-│   │   ├── product.page.ts        # Product details page (PDP)
+│   │   ├── products-list.page.ts    # Listing: search, grid, add-to-cart, view product
+│   │   ├── product-details.page.ts  # Product details page (PDP)
 │   │   ├── cart.page.ts
 │   │   ├── login.page.ts
-│   │   └── registration.page.ts   # Two-step signup journey
+│   │   └── registration.page.ts     # Two-step signup journey
 │   ├── reporters/
 │   │   └── logging-reporter.ts    # Custom reporter → winston summary
 │   └── utils/
@@ -78,6 +80,7 @@ ecommerce-automation-framework/
 ├── tests/
 │   ├── auth/
 │   │   ├── login.spec.ts
+│   │   ├── logout.spec.ts
 │   │   └── registration.spec.ts
 │   ├── catalog/
 │   │   ├── search.spec.ts
@@ -208,9 +211,10 @@ protects customer accounts.
 | **Product details page** | core info (name + price) renders             | The page where the buying decision is made                                   |
 | **Add to cart**          | add from listing, verify it persists in cart | The key pre-checkout conversion event; chains the whole funnel               |
 | **Login**                | reject invalid creds; (conditional) valid sign-in | Account access + the most security-relevant behaviour                        |
+| **Logout**               | sign out and confirm the logged-out state    | A broken logout is a real privacy risk on shared devices                     |
 | **Registration**         | full end-to-end account creation             | Top of the retention funnel; a broken signup blocks all new shoppers         |
 
-**7 tests across 5 files.** Deliberate trade-offs worth calling out:
+**8 tests across 6 files.** Deliberate trade-offs worth calling out:
 
 - **Negative coverage where it's cheap and high-value.** The invalid-login test
   needs no special data, is deterministic, and guards the behaviour most likely

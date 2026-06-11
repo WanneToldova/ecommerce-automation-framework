@@ -1,8 +1,8 @@
 /**
- * Deliberately invalid credentials for the negative login test.
- * These never correspond to a real account, so the test is safe and stable.
+ * Bad credentials for the negative login test. They never match a real
+ * account, so the test stays deterministic and safe.
  */
 export const INVALID_CREDENTIALS = {
-  email: 'wanneinvalidcredencial@example.com',
+  email: 'wanne.invalid@example.com',
   password: 'WrongPassword123!',
 } as const;

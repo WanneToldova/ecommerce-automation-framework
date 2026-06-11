@@ -120,4 +120,10 @@ export class RegistrationPage extends BasePage {
   async assertAccountCreated(): Promise<void> {
     await expect(this.accountCreated).toBeVisible({ timeout: 15000 });
   }
+
+  /** Clicks "Continue" on the confirmation page, which lands logged in. */
+  async continueAfterCreation(): Promise<void> {
+    logger.info('Continuing after account creation (lands signed in).');
+    await this.continueButton.click();
+  }
 }

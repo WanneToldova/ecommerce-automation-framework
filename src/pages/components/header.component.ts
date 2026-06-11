@@ -42,6 +42,12 @@ export class Header {
     await this.signupLoginLink.click();
   }
 
+  /** Clicks "Logout" in the nav (only present when signed in). */
+  async logout(): Promise<void> {
+    logger.info('Logging out via the header.');
+    await this.logoutLink.click();
+  }
+
   /** True when the "Logged in as" indicator is present in the nav. */
   async isLoggedIn(): Promise<boolean> {
     return (await this.loggedInAs.count()) > 0;

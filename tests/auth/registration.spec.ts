@@ -1,20 +1,12 @@
 import { test } from '../../src/fixtures/pages.fixture';
 import { generateNewUser } from '../../src/data/test-data';
 
-/**
- * AUTHENTICATION — REGISTRATION
- *
- * Why this is critical: account creation is the top of the customer-retention
- * funnel; a broken signup blocks every new shopper.
- *
- * Because Automation Exercise is a dedicated test environment that permits
- * account creation, we run the full end-to-end journey: enter signup details,
- * complete the account information form with freshly generated unique data, and
- * assert the "Account Created!" confirmation. Against a production site this is
- * exactly the test you would NOT run blindly (real accounts, verification,
- * bot protection) — running it here demonstrates understanding of the
- * test-vs-production environment distinction.
- */
+// Sign-up is the top of the retention funnel — if it breaks, no new customers
+// get in. This site is a dedicated practice environment, so creating an account
+// here is fine and I run the whole journey: signup details -> account form with
+// fresh unique data -> "Account Created!". On a real production site I would
+// NOT run this blindly (real accounts, email verification, bot protection), so
+// running it here is a conscious test-environment-only choice.
 test.describe('Registration', () => {
   test('creates a new account end-to-end', async ({ registrationPage }) => {
     const newUser = generateNewUser();

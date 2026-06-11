@@ -1,15 +1,11 @@
 import { test, expect } from '../../src/fixtures/pages.fixture';
 import { SEARCH_TERMS } from '../../src/data/test-data';
 
-/**
- * SEARCH / CATALOGUE BROWSING
- *
- * Why this is critical: search is the primary way shoppers find products. If
- * search breaks, discovery (and therefore revenue) collapses regardless of how
- * good the rest of the funnel is. We cover that a common term returns results,
- * and that searching actually *narrows* the catalogue rather than ignoring the
- * query — a subtle but common regression.
- */
+// Search is how most shoppers find anything, so I treat it as a top priority:
+// if it breaks, discovery dies no matter how good the rest of the funnel is.
+// I check two things — a common term returns products, and searching actually
+// narrows the grid (I've seen regressions where the query is ignored and the
+// full catalogue shows up regardless).
 test.describe('Catalogue search', () => {
   test('returns a populated results grid for a common term', async ({ productsPage }) => {
     await productsPage.open();
@@ -29,8 +25,8 @@ test.describe('Catalogue search', () => {
     await productsPage.waitForResults();
     const searchedCount = await productsPage.productCount();
 
-    // Search must return something, but fewer than the full catalogue —
-    // proving the query is actually applied.
+    // Should return something, but fewer than the full list — proof the query
+    // was actually applied.
     expect(searchedCount).toBeGreaterThan(0);
     expect(searchedCount).toBeLessThanOrEqual(totalCount);
   });

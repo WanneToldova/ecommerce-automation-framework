@@ -1,14 +1,9 @@
 import { test } from '../../src/fixtures/pages.fixture';
 import { SEARCH_TERMS } from '../../src/data/test-data';
 
-/**
- * PRODUCT DETAILS PAGE (PDP)
- *
- * Why this is critical: the PDP is where the buying decision happens. It must
- * reliably present the essentials a shopper needs — name and price. We reach it
- * the way a real user does (search → open a product), so the test also
- * exercises the navigation contract between the listing and the PDP.
- */
+// The product page is where people decide to buy, so the essentials (name and
+// price) have to be there. I get to it the way a shopper does — search, then
+// open a product — so this also covers the hand-off from the listing to the PDP.
 test.describe('Product details page', () => {
   test('displays the core product information', async ({ productsPage, productPage }) => {
     await productsPage.open();

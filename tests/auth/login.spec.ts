@@ -2,22 +2,16 @@ import { test } from '../../src/fixtures/pages.fixture';
 import { config } from '../../src/config/env.config';
 import { INVALID_CREDENTIALS } from '../../src/data/users';
 
-/**
- * AUTHENTICATION — LOGIN
- *
- * Why this is critical: returning customers expect to sign in to see orders and
- * check out faster. We test two angles:
- *
- *  1. Negative path (always runs): invalid credentials must be rejected with a
- *     clear error. Needs no real account, is deterministic, and guards the most
- *     security-relevant behaviour — that wrong credentials never get in.
- *
- *  2. Happy path (conditional): a valid sign-in. Requires a real test account,
- *     so it self-skips unless TEST_USER_EMAIL / TEST_USER_PASSWORD are provided
- *     in .env. (On this practice site you can register an account and drop its
- *     credentials into .env to enable this test.) Skipping rather than failing
- *     keeps the default run green for any reviewer.
- */
+// Returning customers need to sign in, so I cover login from two sides.
+//
+// The negative case always runs: wrong credentials must be rejected with a
+// clear error. It needs no real account, it's deterministic, and it guards the
+// behaviour that matters most for security — that bad credentials never get in.
+//
+// The happy path needs a real account, so it skips itself unless credentials
+// are set in .env. (Easiest way: run the registration test once, then put that
+// account's email + password in .env.) Skipping instead of failing keeps the
+// default run green for whoever clones the repo.
 test.describe('Login', () => {
   test('rejects invalid credentials with an error message', async ({ loginPage }) => {
     await loginPage.open();
@@ -26,15 +20,12 @@ test.describe('Login', () => {
   });
 
   test('signs in successfully with valid credentials', async ({ loginPage }) => {
-    test.skip(
-      !config.hasCredentials,
-      'No TEST_USER_EMAIL / TEST_USER_PASSWORD provided — skipping login happy path.',
-    );
+    test.skip(!config.hasCredentials, 'Set TEST_USER_EMAIL / TEST_USER_PASSWORD in .env to run this.');
 
     await loginPage.open();
     await loginPage.login(config.credentials.email, config.credentials.password);
 
-    // A successful sign-in surfaces the "Logged in as" indicator in the nav.
+    // A good sign-in shows "Logged in as ..." in the nav.
     test.expect(await loginPage.header.isLoggedIn()).toBeTruthy();
   });
 });
